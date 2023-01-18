@@ -19,27 +19,39 @@ github.com/danielswe88/go-gpt-3-encoder
 Compatible with Node >= 12
 
 ```go
-import tokenizer "github.com/danielswe88/go-gpt-3-encoder"
+package main
 
-encoder, err := tokenizer.NewEncoder()
-if err != nil {
-    log.Fatal(err)
+import (
+ "fmt"
+ "log"
+
+ tokenizer "github.com/danielswe88/go-gpt-3-encoder"
+)
+
+func main() {
+ encoder, err := tokenizer.NewEncoder()
+ if err != nil {
+  log.Fatal(err)
+ }
+
+ str := "This is an example sentence to try encoding out on!"
+
+ encoded, err := encoder.Encode(str)
+ if err != nil {
+  log.Fatal(err)
+ }
+
+ fmt.Printf("String contains %d tokens\n", len(encoded))
+
+ fmt.Println("We can look at each token and what it represents:")
+ for _, token := range encoded {
+  fmt.Printf("%d -- %s\n", token, encoder.Decode([]int{token}))
+ }
+
+ decoded := encoder.Decode(encoded)
+ fmt.Printf("We can decode it back into: %s\n", decoded)
 }
 
-str := "This is an example sentence to try encoding out on!"
-
-encoded, err := encoder.Encode(str)
-if err != nil {
-    log.Fatal(err)
-}
-
-fmt.Println("We can look at each token and what it represents:")
-for _, token := encoded {
-  fmt.Printf("%s -- %s\n", token, encoder.Decode([]string{token}))
-}
-
-decoded := encoder.Decode(encoded)
-fmt.Printf("We can decode it back into: %s\n", decoded)
 ```
 
 ## Contribute
